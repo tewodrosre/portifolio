@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional Portfolio of Tewodros Redae - Civil Engineer & Construction Manager">
+    <title>{% block title %}Tewodros Redae{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+        }
+        
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(0,0,0,0.5);
+            padding: 1rem;
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+            .hero-section {
+                height: 50vh;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" class="rounded-circle" style="width:40px;height:40px;">
+                <span class="ms-2 d-none d-md-inline">Tewodros Redae</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('experience') }}">Experience</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('certifications') }}">Certifications</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('services') }}">Services</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container text-center">
+            <div class="mb-3">
+                <a href="https://linkedin.com" class="text-white mx-2"><i class="fab fa-linkedin fa-2x"></i></a>
+                <a href="mailto:gebretewodros73@gmail.com" class="text-white mx-2"><i class="fas fa-envelope fa-2x"></i></a>
+                <a href="tel:+251964108463" class="text-white mx-2"><i class="fas fa-phone fa-2x"></i></a>
+            </div>
+            <p>&copy; 2023 Tewodros Redae. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

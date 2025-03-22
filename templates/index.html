@@ -1,121 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tewodros Redae - Civil Engineer Portfolio</title>
-     <!-- Favicon for browser tab -->
-     <link rel="icon" type="image/x-icon" href="/static/logo.jpg">
-     <!-- Optional: For better browser/device compatibility -->
-     <link rel="apple-touch-icon" sizes="180x180" href="/static/logo.jpg">
-     <link rel="icon" type="image/png" sizes="32x32" href="/static/logo.jpg">
-     <link rel="icon" type="image/png" sizes="16x16" href="/static/logo.jpg">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: url('static/future.jpeg') center/cover no-repeat;
-        }
-        .hero {
-            background: url('static/future1.jpeg') center/cover no-repeat;
-            color: white;
-            text-align: center;
-            padding: 100px 20px;
-            box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
-        }
-        .section-heading {
-            margin-bottom: 30px;
-            font-weight: bold;
-        }
-        .gallery img {
-            width: 100%;
-            height: auto;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            transition: transform 0.3s ease-in-out;
-        }
-        .gallery img:hover {
-            transform: scale(1.05);
-        }
-        /* Added logo styling */
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo {
-            width: 40px;
-            height: auto;
-            margin-right: 10px;
-        }
-        .brand-text {
-            margin: 0;
-            font-size: 1.25rem;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="/static/logo.jpg" alt="Tewodros Redae Logo" class="logo">
-                <h1 class="brand-text">Tewodros Redae</h1>
-                </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('experience') }}">Experience</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('certifications') }}">Certifications</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
+{% extends "base.html" %}
+
+{% block title %}Civil Engineer Portfolio{% endblock %}
+
+{% block content %}
+<section class="hero-section vh-75 d-flex align-items-center">
+    <div class="container text-center text-white">
+        <h1 class="display-4 mb-4">Civil Engineer | Project Manager</h1>
+        <p class="lead">Expert in High-Rise Construction & Innovative Structural Solutions</p>
+    </div>
+</section>
+
+<section id="projects" class="container py-5">
+    <h2 class="text-center mb-5 display-5">Featured Projects</h2>
+    <div class="row g-4">
+        {% for project in projects %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card project-card h-100">
+                <img src="{{ url_for('static', filename=project.images[0]) }}" class="card-img-top" alt="{{ project.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <div class="d-flex gap-2 flex-wrap mb-3">
+                        {% for tech in project.tech %}
+                        <span class="badge bg-primary">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                    <p class="card-text">{{ project.description }}</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <button class="btn btn-outline-primary w-100" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#projectModal{{ loop.index }}">
+                        View Details
+                    </button>
+                </div>
             </div>
         </div>
-    </nav>
+        {% endfor %}
+    </div>
+</section>
 
-    <section class="hero">
-        <div class="container">
-            <h1 class="display-4">Civil Engineer | Project Manager</h1>
-            <p class="lead">Dedicated to Excellence in Infrastructure and Construction</p>
+{% for project in projects %}
+<div class="modal fade" id="projectModal{{ loop.index }}" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ project.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="carousel{{ loop.index }}" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for image in project.images %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <img src="{{ url_for('static', filename=image) }}" 
+                                 class="d-block w-100" 
+                                 alt="Project image">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ loop.index }}">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ loop.index }}">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <h4>Technical Specifications</h4>
+                    <ul class="list-group list-group-flush">
+                        {% for tech in project.tech %}
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            {{ tech }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</div>
+{% endfor %}
 
-    <section id="projects" class="container py-5">
-        <h2 class="section-heading">Key Projects</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <img src="static/p1.jpg" alt="Project 1">
-                <p><strong>22 Residential Buildings – Legetafo</strong><br>Supervised G+2 buildings with modern structural foundations.</p>
-            </div>
-            <div class="col-md-4">
-                <img src="static/pd2.jpg" alt="Project 2">
-                <p><strong>Debre Markos University Construction</strong><br>Oversaw dormitories, classrooms, and cafeteria construction.</p>
-            </div>
-            <div class="col-md-4">
-                <img src="static/p3.jpg" alt="Project 3">
-                <p><strong>3600m² Salt Warehouse – Afdera</strong><br>Managed truss installation under extreme weather conditions.</p>
+<section id="contact" class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Contact Me</h2>
+                    {% if request.args.get('success') %}
+                    <div class="alert alert-success">Message sent successfully!</div>
+                    {% endif %}
+                    {% if request.args.get('error') %}
+                    <div class="alert alert-danger">Error sending message. Please try again.</div>
+                    {% endif %}
+                    <form method="POST" action="{{ url_for('contact') }}">
+                        <div class="mb-3">
+                            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="contact" class="container py-5">
-        <h2 class="section-heading">Contact</h2>
-        <p>For collaborations or inquiries, reach out via email at <a href="mailto:gebretewodros73@gmai.com">gebretewodros73@gmail.com</a> or call +251964108463.</p>
-        <form class="contact-form">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <textarea placeholder="Your Message" rows="4" required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
-
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2025 Tewodros Redae. All Rights Reserved.</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                    url("{{ url_for('static', filename='future1.jpeg') }}");
+        background-size: cover;
+        background-position: center;
+        margin-top: 76px; /* Offset fixed navbar */
+    }
+    
+    .project-card img {
+        height: 250px;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}
